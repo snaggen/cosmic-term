@@ -1346,6 +1346,7 @@ impl Application for App {
                     // we get a terminal event channel
                     self.term_event_tx_opt = Some(term_event_tx);
                     self.create_and_focus_new_terminal(self.pane_model.focus);
+                    return self.update_focus();
                 } else {
                     self.term_event_tx_opt = Some(term_event_tx);
                 }
@@ -1581,6 +1582,10 @@ impl Application for App {
                 100,
                 |mut output| async move {
                     let (event_tx, mut event_rx) = mpsc::channel(100);
+
+                    //Without this sleep, the terminal seems to behave
+                    //quite weird in when compiled with --release.
+                    tokio::time::sleep(tokio::time::Duration::from_millis(50)).await;
                     output.send(Message::TermEventTx(event_tx)).await.unwrap();
 
                     while let Some((pane, entity, event)) = event_rx.recv().await {
