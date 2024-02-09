@@ -31,6 +31,9 @@ i18n-embed = { version = "0.14", features = [
 ] }
 i18n-embed-fl = "0.7"
 rust-embed = "8"
+secret-service = { version = "3.0.1", features = ["rt-tokio-crypto-rust"] }
+thiserror = "1.0.56"
+secstr = "0.5.1"
 
 [dependencies.cosmic-files]
 git = "https://github.com/pop-os/cosmic-files.git"
