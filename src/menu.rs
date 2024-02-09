@@ -70,6 +70,7 @@ pub fn context_menu<'a>(
         horizontal_rule(1),
         menu_item(fl!("new-tab"), Action::TabNew),
         menu_item(fl!("menu-settings"), Action::Settings),
+        menu_item(fl!("menu-password-manager"), Action::PasswordManager),
         menu_checkbox(
             fl!("show-headerbar"),
             config.show_headerbar,
@@ -207,6 +208,7 @@ pub fn menu_bar<'a>(config: &Config, key_binds: &HashMap<KeyBind, Action>) -> El
                         Action::ColorSchemes(config.color_scheme_kind()),
                     ),
                     MenuItem::Button(fl!("menu-settings"), Action::Settings),
+                    MenuItem::Button(fl!("menu-password-manager"), Action::PasswordManager),
                     MenuItem::Divider,
                     MenuItem::Button(fl!("menu-about"), Action::About),
                 ],
