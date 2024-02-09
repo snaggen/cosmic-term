@@ -35,6 +35,9 @@ icu_collator = "1.5"
 icu_provider = { version = "1.5", features = ["sync"] }
 rust-embed = "8"
 url = "2.5"
+secret-service = { version = "4.0.0", features = ["rt-tokio-crypto-rust"] }
+thiserror = "2.0.11"
+secstr = "0.5.1"
 
 [dependencies.cosmic-files]
 git = "https://github.com/pop-os/cosmic-files.git"
