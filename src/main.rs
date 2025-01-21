@@ -371,6 +371,8 @@ pub enum Message {
     UseBrightBold(bool),
     WindowClose,
     WindowNew,
+    WindowFocused,
+    WindowUnfocused,
     ZoomIn,
     ZoomOut,
     ZoomReset,
@@ -587,6 +589,7 @@ impl App {
     }
 
     fn update_focus(&self) -> Task<Message> {
+        self.pane_model.update_terminal_focus();
         if self.find {
             widget::text_input::focus(self.find_search_id.clone())
         } else if let Some(terminal_id) = self.terminal_ids.get(&self.pane_model.focus).cloned() {
@@ -2639,6 +2642,12 @@ impl Application for App {
                     log::error!("failed to get current executable path: {}", err);
                 }
             },
+            Message::WindowFocused => {
+                return self.update_focus();
+            }
+            Message::WindowUnfocused => {
+                self.pane_model.unfocus_all_terminals();
+            }
             Message::ZoomIn => {
                 return self.update_render_active_pane_zoom(message);
             }
@@ -2744,6 +2753,8 @@ impl Application for App {
                     })
                     .on_middle_click(move || Message::MiddleClick(pane, Some(entity_middle_click)))
                     .on_open_hyperlink(Some(Box::new(Message::LaunchUrl)))
+                    .on_window_focused(|| Message::WindowFocused)
+                    .on_window_unfocused(|| Message::WindowUnfocused)
                     .opacity(self.config.opacity_ratio())
                     .padding(space_xxs)
                     .show_headerbar(self.config.show_headerbar);
